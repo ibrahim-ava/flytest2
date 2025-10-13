@@ -1,0 +1,3 @@
+CREATE TABLE ppl (
+	age INTEGER
+) STRICT;

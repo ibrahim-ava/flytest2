@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flyway-migrate-git
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: git-clone
+          image: alpine/git
+          command:
+            - git
+            - clone
+            - --depth=1
+            - https://github.com/yourusername/your-migrations-repo.git
+            - /flyway
+          volumeMounts:
+            - name: migrations-volume
+              mountPath: /flyway
+      containers:
+        - name: flyway
+          image: redgate/flyway
+          command: ["flyway", "migrate"]
+          workingDir: /flyway
+          volumeMounts:
+            - name: migrations-volume
+              mountPath: /flyway
+          env:
+            - name: FLYWAY_CONFIG_FILES
+              value: "/flyway/flyway.toml,/flyway/flyway.user.toml"
+            - name: FLYWAY_LOCATIONS
+              value: "filesystem:/flyway/migrations"
+            - name: FLYWAY_URL
+              value: "jdbc:sqlite:/flyway/sample.db"
+      volumes:
+        - name: migrations-volume
+          emptyDir: {}
+      restartPolicy: Never
+  backoffLimit: 2
