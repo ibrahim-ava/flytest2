@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-flyway-basic
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: git-clone
+          image: alpine/git
+          command: ["sh", "-c"]
+          args:
+            - |
+              git clone https://github.com/ibrahim-ava/flytest2.git /workspace/flyway
+          volumeMounts:
+            - name: migrations-volume
+              mountPath: /workspace
+      containers:
+        - name: flyway-test
+          image: redgate/flyway
+          command: ["flyway", "info"]
+          workingDir: /workspace
+          volumeMounts:
+            - name: migrations-volume
+              mountPath: /workspace
+          env:
+            - name: FLYWAY_CONFIG_FILES
+              value: "/workspace/flyway/flyway.toml"
+            - name: FLYWAY_LOCATIONS
+              value: "filesystem:/workspace/flyway/migrations"
+            - name: FLYWAY_URL
+              value: "jdbc:sqlite:/workspace/flyway/sample.db"
+      volumes:
+        - name: migrations-volume
+          emptyDir: {}
+      restartPolicy: Never
+  backoffLimit: 2

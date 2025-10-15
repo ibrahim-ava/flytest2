@@ -1,0 +1,93 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"batch/v1\",\"kind\":\"Job\",\"metadata\":{\"annotations\":{},\"name\":\"fly2\",\"namespace\":\"default\"},\"spec\":{\"backoffLimit\":2,\"template\":{\"spec\":{\"containers\":[{\"command\":[\"flyway\",\"-v\"],\"image\":\"redgate/flyway\",\"name\":\"flyway\"}],\"restartPolicy\":\"Never\"}}}}\n"
+        },
+        "creationTimestamp": "2025-10-14T00:09:31Z",
+        "generation": 1,
+        "labels": {
+            "batch.kubernetes.io/controller-uid": "f0c37349-ded0-4217-92e4-7e6b02c5b88f",
+            "batch.kubernetes.io/job-name": "fly2",
+            "controller-uid": "f0c37349-ded0-4217-92e4-7e6b02c5b88f",
+            "job-name": "fly2"
+        },
+        "name": "fly2",
+        "namespace": "default",
+        "resourceVersion": "1760400587398575013",
+        "uid": "f0c37349-ded0-4217-92e4-7e6b02c5b88f"
+    },
+    "spec": {
+        "backoffLimit": 2,
+        "completionMode": "NonIndexed",
+        "completions": 1,
+        "manualSelector": false,
+        "parallelism": 1,
+        "podReplacementPolicy": "TerminatingOrFailed",
+        "selector": {
+            "matchLabels": {
+                "batch.kubernetes.io/controller-uid": "f0c37349-ded0-4217-92e4-7e6b02c5b88f"
+            }
+        },
+        "suspend": false,
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "batch.kubernetes.io/controller-uid": "f0c37349-ded0-4217-92e4-7e6b02c5b88f",
+                    "batch.kubernetes.io/job-name": "fly2",
+                    "controller-uid": "f0c37349-ded0-4217-92e4-7e6b02c5b88f",
+                    "job-name": "fly2"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "command": [
+                            "flyway",
+                            "-v"
+                        ],
+                        "image": "redgate/flyway",
+                        "imagePullPolicy": "Always",
+                        "name": "flyway",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File"
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "terminationGracePeriodSeconds": 30
+            }
+        }
+    },
+    "status": {
+        "completionTime": "2025-10-14T00:09:47Z",
+        "conditions": [
+            {
+                "lastProbeTime": "2025-10-14T00:09:47Z",
+                "lastTransitionTime": "2025-10-14T00:09:47Z",
+                "message": "Reached expected number of succeeded pods",
+                "reason": "CompletionsReached",
+                "status": "True",
+                "type": "SuccessCriteriaMet"
+            },
+            {
+                "lastProbeTime": "2025-10-14T00:09:47Z",
+                "lastTransitionTime": "2025-10-14T00:09:47Z",
+                "message": "Reached expected number of succeeded pods",
+                "reason": "CompletionsReached",
+                "status": "True",
+                "type": "Complete"
+            }
+        ],
+        "ready": 0,
+        "startTime": "2025-10-14T00:09:31Z",
+        "succeeded": 1,
+        "terminating": 0,
+        "uncountedTerminatedPods": {}
+    }
+}

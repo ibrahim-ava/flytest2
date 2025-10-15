@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: fly2
+  name: fly3
 spec:
   template:
     spec:
       containers:
         - name: flyway
           image: redgate/flyway
-          command: ["flyway", "-v"]
+          command: ["flywayyy", "-v"]
       restartPolicy: Never
   backoffLimit: 2

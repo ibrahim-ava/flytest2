@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: debug-flyway-files
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: git-clone
+          image: alpine/git
+          command:
+            - git
+            - clone
+            - --depth=1
+            - https://github.com/ibrahim-ava/flytest2.git
+            - /flyway
+          volumeMounts:
+            - name: migrations-volume
+              mountPath: /flyway
+      containers:
+        - name: debug
+          image: alpine
+          command: ["sh", "-c", "
+            echo '=== Directory structure ===' &&
+            find /flyway -type f &&
+            echo '=== Checking config files ===' &&
+            ls -la /flyway/flyway.toml /flyway/flyway.user.toml &&
+            echo '=== Checking migrations ===' &&
+            ls -la /flyway/migrations/ &&
+            echo '=== First few lines of flyway.toml ===' &&
+            head -5 /flyway/flyway.toml
+          "]
+          volumeMounts:
+            - name: migrations-volume
+              mountPath: /flyway
+      volumes:
+        - name: migrations-volume
+          emptyDir: {}
+      restartPolicy: Never
